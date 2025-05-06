@@ -17,7 +17,7 @@ import ru.practicum.exception.NotFoundException;
 @RequiredArgsConstructor
 @RequestMapping("/admin/categories")
 public class AdminCategoryController {
-    final CategoryService categoryServic;
+    final CategoryService categoryService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
