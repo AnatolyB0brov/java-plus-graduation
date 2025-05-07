@@ -43,17 +43,10 @@ public class StatsServiceImpl implements StatsService {
 
         List<Response> statistic;
         if ((uris == null) || (uris.isEmpty())) {
-            if (unique) {
-                statistic = statsRepository.findAllUnique(start, end);
-            } else {
-                statistic = statsRepository.findAll(start, end);
-            }
+            statistic = unique ? statsRepository.findAllUnique(start, end) : statsRepository.findAll(start, end);
         } else {
-            if (unique) {
-                statistic = statsRepository.findUrisUnique(start, end, uris);
-            } else {
-                statistic = statsRepository.findUris(start, end, uris);
-            }
+            statistic = unique ? statsRepository.findUrisUnique(start, end, uris) :
+                    statsRepository.findUris(start, end, uris);
         }
         return statistic.stream()
                 .map(Mapper::toResponseDto)

@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 
 import static ru.practicum.util.JsonFormatPattern.JSON_FORMAT_PATTERN_FOR_TIME;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder

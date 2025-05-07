@@ -33,8 +33,8 @@ public class AdminEventController {
                                         @RequestParam(required = false) List<Long> categories,
                                         @DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam(required = false) LocalDateTime rangeStart,
                                         @DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam(required = false) LocalDateTime rangeEnd,
-                                        @RequestParam(required = false, defaultValue = "0") Integer from,
-                                        @RequestParam(required = false, defaultValue = "10") Integer size) throws ValidationException {
+                                        @RequestParam(defaultValue = "0") Integer from,
+                                        @RequestParam(defaultValue = "10") Integer size) throws ValidationException {
         return eventService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
