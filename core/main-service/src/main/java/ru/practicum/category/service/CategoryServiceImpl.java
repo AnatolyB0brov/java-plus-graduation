@@ -40,11 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) throws NotFoundException, ConflictException {
-        // Найти категорию по ID, либо выбросить исключение, если не найдена
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Категория с ID " + catId + " не найдена."));
-
-        // Проверить, существует ли другая категория с таким же именем
         boolean categoryExists = categoryRepository.findByName(categoryDto.getName()).stream()
                 .anyMatch(c -> !c.getId().equals(catId));
 
@@ -54,11 +51,8 @@ public class CategoryServiceImpl implements CategoryService {
                     categoryDto.getName()
             ));
         }
-
-        // Обновить и сохранить изменения
         category.setName(categoryDto.getName());
         Category updatedCategory = categoryRepository.save(category);
-
         return CategoryMapper.mapCategory(updatedCategory);
     }
 
@@ -86,11 +80,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException(String.format("Категория с id=%d не существует", catId));
         }
-
-        if (!eventRepository.existsByCategoryId(catId)) {
-            categoryRepository.deleteById(catId);
-        } else {
+        if (eventRepository.existsByCategoryId(catId)) {
             throw new ConflictException("Невозможно удаление используемой категории события ");
         }
+        categoryRepository.deleteById(catId);
     }
 }
