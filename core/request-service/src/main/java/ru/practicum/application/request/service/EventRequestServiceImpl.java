@@ -51,9 +51,7 @@ public class EventRequestServiceImpl implements EventRequestService {
             throw new ConflictException("Событие не опубликовано");
         }
         List<EventRequest> requests = getEventRequestsByEventId(event.getId());
-        if (participationLimitIsFull(event)) {
-            throw new ConflictException("Превышен лимит заявок на участие в событии");
-        }
+        participationLimitIsFull(event);
         for (EventRequest request : requests) {
             if (request.getRequester().equals(userId)) {
                 throw new ConflictException("Повторная заявка на участие в событии");
@@ -196,12 +194,11 @@ public class EventRequestServiceImpl implements EventRequestService {
         return newRequest;
     }
 
-    private boolean participationLimitIsFull(EventFullDto event) throws ConflictException {
+    private void participationLimitIsFull(EventFullDto event) throws ConflictException {
         Long confirmedRequestsCounter = requestRepository.countByEventAndStatuses(event.getId(), List.of("CONFIRMED", "ACCEPTED"));
         if (event.getParticipantLimit() != 0 && event.getParticipantLimit() <= confirmedRequestsCounter) {
             throw new ConflictException("Превышено число заявок на участие");
         }
-        return false;
     }
 
     private List<EventRequest> getEventRequests(Long userId, Long eventId) throws ValidationException, NotFoundException {
@@ -216,9 +213,8 @@ public class EventRequestServiceImpl implements EventRequestService {
     private List<EventRequest> getEventRequestsByEventId(Long eventId) throws NotFoundException {
         if (eventClient.existsById(eventId)) {
             return requestRepository.findByEventId(eventId);
-        } else {
-            throw new NotFoundException("Событие не найдено eventId=" + eventId);
         }
+        throw new NotFoundException("Событие не найдено eventId=" + eventId);
     }
 
     private EventFullDto getEventById(Long eventId) throws NotFoundException {

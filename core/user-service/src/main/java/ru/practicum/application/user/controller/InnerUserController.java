@@ -11,10 +11,9 @@ import ru.practicum.application.user.api.InnerUserInterface;
 
 @RestController
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class InnerUserController implements InnerUserInterface {
 
-    final UserService userService;
+    private final UserService userService;
 
     @Override
     public UserDto getById(Long userId) throws NotFoundException {
