@@ -93,11 +93,8 @@ public class EventServiceImpl implements EventService {
                 events = eventRepository.findAllByCategoryIdPageable(categories, EventState.PUBLISHED,
                         PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "e.eventDate")));
             } else {
-                if (rangeStart == null) {
-                    startDate = LocalDateTime.now();
-                } else {
-                    startDate = LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern(JSON_FORMAT_PATTERN_FOR_TIME));
-                }
+                startDate = (rangeStart == null) ? LocalDateTime.now() :
+                        LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern(JSON_FORMAT_PATTERN_FOR_TIME));
                 if (text == null) {
                     text = "";
                 }
@@ -108,21 +105,19 @@ public class EventServiceImpl implements EventService {
                     endDate = LocalDateTime.parse(rangeEnd, DateTimeFormatter.ofPattern(JSON_FORMAT_PATTERN_FOR_TIME));
                     if (startDate.isAfter(endDate)) {
                         throw new ValidationException("Дата и время начала поиска не должна быть позже даты и времени конца поиска");
-                    } else {
-                        events = eventRepository.findAllByTextAndDateRange("%" + text.toLowerCase() + "%",
-                                startDate,
-                                endDate,
-                                EventState.PUBLISHED,
-                                PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "e.eventDate")));
                     }
+                    events = eventRepository.findAllByTextAndDateRange("%" + text.toLowerCase() + "%",
+                            startDate,
+                            endDate,
+                            EventState.PUBLISHED,
+                            PageRequest.of(from / size, size, Sort.by(Sort.Direction.DESC, "e.eventDate")));
+
                 }
             }
         } else {
-            if (rangeStart == null) {
-                startDate = LocalDateTime.now();
-            } else {
-                startDate = LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern(JSON_FORMAT_PATTERN_FOR_TIME));
-            }
+            startDate = (rangeStart == null) ? LocalDateTime.now() :
+                    LocalDateTime.parse(rangeStart, DateTimeFormatter.ofPattern(JSON_FORMAT_PATTERN_FOR_TIME));
+
             if (rangeEnd == null) {
                 endDate = null;
             } else {

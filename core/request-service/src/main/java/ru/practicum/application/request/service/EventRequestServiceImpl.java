@@ -182,11 +182,7 @@ public class EventRequestServiceImpl implements EventRequestService {
         EventRequest newRequest = new EventRequest();
         newRequest.setRequester(user.getId());
         newRequest.setCreated(LocalDateTime.now());
-        if (event.getParticipantLimit() == 0) {
-            newRequest.setStatus(CONFIRMED_REQUEST);
-        } else {
-            newRequest.setStatus(PENDING_REQUEST);
-        }
+        newRequest.setStatus(event.getParticipantLimit() == 0 ? CONFIRMED_REQUEST : PENDING_REQUEST);
         newRequest.setEvent(event.getId());
         if (!event.getRequestModeration()) {
             newRequest.setStatus(ACCEPTED_REQUEST);
