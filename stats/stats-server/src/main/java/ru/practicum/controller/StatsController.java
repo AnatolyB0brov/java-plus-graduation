@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public class StatsController implements StatsInterface {
 
-    final StatsService statsService;
+    private final StatsService statsService;
 
     @Autowired
     public StatsController(@Qualifier("statsServiceImpl") StatsService statsService) {
