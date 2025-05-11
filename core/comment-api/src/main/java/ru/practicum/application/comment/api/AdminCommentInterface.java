@@ -14,7 +14,7 @@ import java.util.Collection;
 public interface AdminCommentInterface {
     @GetMapping("/admin/comments")
     Collection<CommentDto> getComments(
-            @RequestParam("eventId") @Positive Long eventId,
+            @RequestParam @Positive Long eventId,
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(defaultValue = "10") @Positive Integer size
     ) throws NotFoundException;
