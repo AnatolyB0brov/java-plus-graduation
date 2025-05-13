@@ -16,10 +16,10 @@ import static ru.practicum.client.util.JsonFormatPattern.JSON_FORMAT_PATTERN_FOR
 public interface StatsInterface {
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
-    public List<StatsResponseDto> getStats(@DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam(value = "start") LocalDateTime start,
-                                           @DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam(value = "end") LocalDateTime end,
+    public List<StatsResponseDto> getStats(@DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam LocalDateTime start,
+                                           @DateTimeFormat(pattern = JSON_FORMAT_PATTERN_FOR_TIME) @RequestParam LocalDateTime end,
                                            @RequestParam(required = false) List<String> uris,
-                                           @RequestParam(required = false, defaultValue = "false") Boolean unique);
+                                           @RequestParam(defaultValue = "false") Boolean unique);
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
