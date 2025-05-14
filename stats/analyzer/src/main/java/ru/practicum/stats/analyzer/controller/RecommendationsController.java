@@ -19,8 +19,16 @@ public class RecommendationsController extends RecommendationsControllerGrpc.Rec
     @Override
     public void getRecommendationsForUser(UserPredictionsRequestProto request,
                                           StreamObserver<RecommendedEventProto> responseObserver) {
-        service.getRecommendationsForUser(request, responseObserver);
-        responseObserver.onCompleted();
+        try {
+            service.getRecommendationsForUser(request, responseObserver);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
+        }
     }
 
     @Override
