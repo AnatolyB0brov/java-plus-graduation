@@ -41,10 +41,15 @@ public class AggregatorStarter implements Runnable {
             log.error("Сбой обработки ", e);
             log.error(e.getMessage());
         } finally {
-            log.info("Закрываем консьюмер");
-            consumer.close();
-            log.info("Закрываем продюсер");
-            handler.close();
+            try {
+                handler.flush();
+                consumer.commitSync();
+            } finally {
+                log.info("Закрываем консьюмер");
+                consumer.close();
+                log.info("Закрываем продюсер");
+                handler.close();
+            }
         }
     }
 
