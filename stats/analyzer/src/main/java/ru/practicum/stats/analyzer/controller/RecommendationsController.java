@@ -49,7 +49,15 @@ public class RecommendationsController extends RecommendationsControllerGrpc.Rec
     @Override
     public void getInteractionsCount(InteractionsCountRequestProto request,
                                      StreamObserver<RecommendedEventProto> responseObserver) {
-        service.getInteractionsCount(request, responseObserver);
-        responseObserver.onCompleted();
+        try {
+            service.getInteractionsCount(request, responseObserver);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
+        }
     }
 }
