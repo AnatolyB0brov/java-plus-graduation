@@ -34,8 +34,16 @@ public class RecommendationsController extends RecommendationsControllerGrpc.Rec
     @Override
     public void getSimilarEvents(SimilarEventsRequestProto request,
                                  StreamObserver<RecommendedEventProto> responseObserver) {
-        service.getSimilarEvents(request, responseObserver);
-        responseObserver.onCompleted();
+        try {
+            service.getSimilarEvents(request, responseObserver);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
+        }
     }
 
     @Override
