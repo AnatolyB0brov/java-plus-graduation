@@ -42,25 +42,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) throws NotFoundException, ConflictException {
-        // Найти категорию по ID, либо выбросить исключение, если не найдена
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Категория с ID " + catId + " не найдена."));
-
-        // Проверить, существует ли другая категория с таким же именем
         boolean categoryExists = categoryRepository.findByName(categoryDto.getName()).stream()
                 .anyMatch(c -> !c.getId().equals(catId));
-
         if (categoryExists) {
             throw new ConflictException(String.format(
                     "Нельзя задать имя категории %s, поскольку такое имя уже используется.",
                     categoryDto.getName()
             ));
         }
-
-        // Обновить и сохранить изменения
         category.setName(categoryDto.getName());
         Category updatedCategory = categoryRepository.save(category);
-
         return CategoryMapper.mapCategory(updatedCategory);
     }
 
@@ -69,7 +62,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto getCategoryById(Long catId) throws NotFoundException {
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Указанная категория не найдена " + catId));
-
         return CategoryMapper.mapCategory(category);
     }
 

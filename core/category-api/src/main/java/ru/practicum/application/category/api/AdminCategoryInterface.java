@@ -10,7 +10,7 @@ import ru.practicum.application.api.exception.NotFoundException;
 public interface AdminCategoryInterface {
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    CategoryDto addCategory(@Valid @RequestBody CategoryDto categoryDto) throws ConflictException;
+    CategoryDto addCategory(@Valid @RequestBody CategoryDto newCategory) throws ConflictException;
 
     @PatchMapping("/admin/categories/{catId}")
     CategoryDto updateCategory(@PathVariable Long catId,
