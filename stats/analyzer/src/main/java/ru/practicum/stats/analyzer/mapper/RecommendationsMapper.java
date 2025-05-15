@@ -1,10 +1,11 @@
 package ru.practicum.stats.analyzer.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.stats.proto.RecommendedEventProto;
-import ru.practicum.stats.analyzer.model.EventSimilarity;
 
+@UtilityClass
 public class RecommendationsMapper {
-    public static RecommendedEventProto mapSimilarityToRecommendation(Long eventId, Double score) {
+    public RecommendedEventProto mapSimilarityToRecommendation(Long eventId, Double score) {
         return RecommendedEventProto.newBuilder()
                 .setEventId(eventId)
                 .setScore(score)

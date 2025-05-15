@@ -1,7 +1,6 @@
 package ru.practicum.stats.analyzer.test;
 
 import io.grpc.stub.StreamObserver;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,16 +27,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class RecommendationsServiceTest {
     @Mock
-    private UserActionRepository actionRepository;
+    UserActionRepository actionRepository;
 
     @Mock
-    private SimilarityRepository similarityRepository;
+    SimilarityRepository similarityRepository;
 
     @Mock
-    private StreamObserver<RecommendedEventProto> responseObserver;
+    StreamObserver<RecommendedEventProto> responseObserver;
 
     @InjectMocks
-    private RecommendationsService recommendationService; // Замените на ваш класс сервиса
+    RecommendationsService recommendationService; // Замените на ваш класс сервиса
 
     @Test
     void shouldCalculateValidPredictedScore() {
@@ -80,13 +79,13 @@ public class RecommendationsServiceTest {
 
         recommendationService.getRecommendationsForUser(request, responseObserver);
 
-        for (RecommendedEventProto proto: results) {
+        for (RecommendedEventProto proto : results) {
             EventSimilarity similarity = similarities.stream()
                     .filter(e -> e.getFirst() == proto.getEventId() || e.getSecond() == proto.getEventId())
                     .findFirst().get();
             Long neighborId = similarity.getFirst() == proto.getEventId() ?
                     similarity.getSecond() : similarity.getFirst();
-            UserAction neighborAction =  userActions.stream()
+            UserAction neighborAction = userActions.stream()
                     .filter(e -> e.getEventId() == neighborId)
                     .findFirst().get();
             double predicatedScore = (neighborAction.getScore() * similarity.getScore()) / similarity.getScore();

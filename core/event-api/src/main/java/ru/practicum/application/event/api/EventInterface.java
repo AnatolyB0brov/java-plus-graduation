@@ -12,10 +12,13 @@ import ru.practicum.application.api.exception.ValidationException;
 import java.util.List;
 
 public interface EventInterface {
+
+    String USER_ID_HEADER = "X-EWM-USER-ID";
+
     @GetMapping("/events/{id}")
     EventFullDto getEventById(
             @PathVariable Long id,
-            @RequestHeader("X-EWM-USER-ID") Long userId,
+            @RequestHeader(USER_ID_HEADER) Long userId,
             HttpServletRequest request
     ) throws NotFoundException;
 
@@ -34,8 +37,8 @@ public interface EventInterface {
     ) throws ValidationException;
 
     @GetMapping("/events/recommendation")
-    List<EventFullDto> getRecommendations(@RequestHeader("X-EWM-USER-ID") Long userId);
+    List<EventFullDto> getRecommendations(@RequestHeader(USER_ID_HEADER) Long userId);
 
     @PutMapping("/events/{eventId}/like")
-    void likeEvent(@PathVariable Long eventId, @RequestHeader("X-EWM-USER-ID") Long userId) throws ValidationException;
+    void likeEvent(@PathVariable Long eventId, @RequestHeader(USER_ID_HEADER) Long userId) throws ValidationException;
 }

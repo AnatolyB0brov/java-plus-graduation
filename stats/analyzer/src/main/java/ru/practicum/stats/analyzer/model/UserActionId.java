@@ -6,9 +6,7 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class UserActionId implements Serializable {
     private Long userId;
     private Long eventId;

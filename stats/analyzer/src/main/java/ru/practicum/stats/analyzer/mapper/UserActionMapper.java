@@ -1,24 +1,26 @@
 package ru.practicum.stats.analyzer.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.stats.avro.ActionTypeAvro;
 import ru.practicum.ewm.stats.avro.UserActionAvro;
 import ru.practicum.stats.analyzer.model.UserAction;
 import ru.practicum.stats.analyzer.model.UserActionId;
 
+@UtilityClass
 public class UserActionMapper {
-    public static UserAction mapAvroToEntity(UserActionAvro avro) {
+    public UserAction mapAvroToEntity(UserActionAvro avro) {
         return new UserAction(avro.getUserId(), avro.getEventId(),
                 convertActionToWeight(avro.getActionType()), avro.getTimestamp());
     }
 
-    public static UserActionId mapAvroToKey(UserActionAvro avro) {
+    public UserActionId mapAvroToKey(UserActionAvro avro) {
         return new UserActionId(avro.getUserId(), avro.getEventId());
     }
 
-    public static double convertActionToWeight(ActionTypeAvro action){
+    public double convertActionToWeight(ActionTypeAvro action) {
         switch (action) {
             case VIEW -> {
-                return  0.4;
+                return 0.4;
             }
             case REGISTER -> {
                 return 0.8;
